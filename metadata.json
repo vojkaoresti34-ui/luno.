@@ -1,0 +1,7 @@
+{
+  "name": "LUNO",
+  "description": "A mood & personality driven solo-travel planner.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

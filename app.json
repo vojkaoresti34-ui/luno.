@@ -1,0 +1,48 @@
+{
+  "expo": {
+    "name": "LUNO",
+    "slug": "luno",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourname.luno",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "LUNO needs your location to provide local recommendations and safety features."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "com.yourname.luno",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id-placeholder"
+      },
+      "apiKey": "AIzaSyBSqbfA_Rh7SFaJ1XUNCDTOP6rYeFnDadI"
+    }
+  }
+}
