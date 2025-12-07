@@ -1,11 +1,11 @@
 
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { UserPreferences, Trip } from "../types";
 
 // API Key provided by user
-const API_KEY = "AIzaSyBSqbfA_Rh7SFaJ1XUNCDTOP6rYeFnDadI";
+const API_KEY = process.env.GEMINI_API_KEY as string;
 
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+const ai = new GoogleGenerativeAI(API_KEY);
 
 const MOCK_TRIP: Trip = {
   id: "mock-trip-1",
@@ -56,63 +56,15 @@ export const generateTrip = async (prefs: UserPreferences): Promise<Trip> => {
       5. Keep descriptions concise (under 20 words).
     `;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-      config: {
+    const model = ai.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      generationConfig: {
         responseMimeType: "application/json",
-        temperature: 0.6,
-        maxOutputTokens: 8192,
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            destination: { type: Type.STRING },
-            days: {
-              type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  id: { type: Type.STRING },
-                  date: { type: Type.STRING },
-                  vibeLabel: { type: Type.STRING },
-                  summary: { type: Type.STRING },
-                  mainActivities: {
-                    type: Type.ARRAY,
-                    items: {
-                      type: Type.OBJECT,
-                      properties: {
-                        id: { type: Type.STRING },
-                        title: { type: Type.STRING },
-                        description: { type: Type.STRING },
-                        time: { type: Type.STRING },
-                        type: { type: Type.STRING }, // Removed strict enum to prevent empty generation
-                        location: { type: Type.STRING }
-                      }
-                    }
-                  },
-                  alternatives: {
-                    type: Type.ARRAY,
-                    items: {
-                      type: Type.OBJECT,
-                      properties: {
-                        id: { type: Type.STRING },
-                        title: { type: Type.STRING },
-                        description: { type: Type.STRING },
-                        time: { type: Type.STRING },
-                        type: { type: Type.STRING },
-                        location: { type: Type.STRING }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+      },
     });
 
-    const text = response.text;
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
     if (!text) throw new Error("No data returned from API");
     
     // Parse JSON safely
